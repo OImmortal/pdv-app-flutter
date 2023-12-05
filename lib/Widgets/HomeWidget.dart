@@ -26,10 +26,10 @@ class HomeWidget extends StatelessWidget {
           DateTime dataElement = element.getDataVenda;
           if (dataElement.add(Duration(hours: 24)).isAfter(DateTime.now())) {
             _vendas += element.getValor;
+            _listVendas.add(element);
           }
         });
-        _listVendas = value;
-      }
+      } else {}
     });
 
     String generateRandomString(int len) {
@@ -43,10 +43,19 @@ class HomeWidget extends StatelessWidget {
     return FutureBuilder(
       future: vendasListService,
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
+        if (snapshot.hasError && snapshot.data != null) {
+          // throw Exception(snapshot.error);
           return Center(
             child: AlertDialog(
               title: Text("Contate o Suporte"),
+              actions: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(snapshot.error.toString()),
+                  ),
+                )
+              ],
             ),
           );
         } else if (snapshot.connectionState == ConnectionState.waiting) {

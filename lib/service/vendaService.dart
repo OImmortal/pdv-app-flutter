@@ -43,8 +43,8 @@ class VendaService {
 
     try {
       if (response.statusCode == 200) {
-        Map json = jsonDecode(response.body);
-        json.forEach((key, value) {
+        Map? json = jsonDecode(response.body);
+        json!.forEach((key, value) {
           if (key != null) {
             // print(value['listaProdutos']);
             double? valor = double.tryParse(value['valorTotal'].toString());

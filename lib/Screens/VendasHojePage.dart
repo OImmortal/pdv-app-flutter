@@ -16,18 +16,10 @@ class VendasHojePage extends StatelessWidget {
     List<Venda>? args =
         ModalRoute.of(context)!.settings.arguments as List<Venda>?;
 
-    List<Venda> _vendasHoje = [];
-    args!.forEach((element) {
-      DateTime dataElement = element.getDataVenda;
-      if (dataElement.add(Duration(hours: 24)).isAfter(DateTime.now())) {
-        _vendasHoje.add(element);
-      }
-    });
-
     return Scaffold(
       appBar: AppBar(),
       body: ListView.builder(
-        itemCount: _vendasHoje.length,
+        itemCount: args!.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 7),
@@ -41,14 +33,42 @@ class VendasHojePage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(_vendasHoje[index].getNomeVenda),
-                    Text(
-                        "R\$ ${formatter.format(_vendasHoje[index].getValor)}"),
-                    Text(dateFormatter.format(_vendasHoje[index].getDataVenda)),
+                    Text(args[index].getNomeVenda),
+                    Text("R\$ ${formatter.format(args[index].getValor)}"),
+                    Text(dateFormatter.format(args[index].getDataVenda)),
                   ],
                 ),
               ),
-              onTap: () {},
+              onTap: () {
+                final _controllerName = TextEditingController();
+                final _controllerValor = TextEditingController();
+                final _controllerComprador = TextEditingController();
+                final _controllerVendedor = TextEditingController();
+
+                _controllerName.text = args[index].getNomeVenda;
+                // _controllerValor.text = _vendasHoje[index].getValor.toString();
+                // _controllerComprador.text = _vendasHoje[index].getNomeComprador;
+                // _controllerVendedor.text = _vendasHoje[index].getNomeVendedor;
+
+                showModalBottomSheet(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15),
+                    ),
+                  ),
+                  context: context,
+                  builder: (context) {
+                    return Column(
+                      children: [
+                        TextField(
+                          controller: _controllerName,
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
             ),
           );
         },
