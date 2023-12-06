@@ -174,6 +174,7 @@ class _VendaWidgetState extends State<VendaWidget> {
                           onPressed: () {
                             // if (_formKey.currentState!.validate()) {
                             Venda venda = Venda(
+                              id: Random().nextDouble().toString(),
                               nomeVenda: widget.nome,
                               valor: valorVenda,
                               listaProdutos: productProvider.listOfProduct,

@@ -43,8 +43,7 @@ class HomeWidget extends StatelessWidget {
     return FutureBuilder(
       future: vendasListService,
       builder: (context, snapshot) {
-        if (snapshot.hasError && snapshot.data != null) {
-          // throw Exception(snapshot.error);
+        if (snapshot.hasError) {
           return Center(
             child: AlertDialog(
               title: Text("Contate o Suporte"),
@@ -105,28 +104,28 @@ class HomeWidget extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Expanded(
-                              child: Card(
-                                color: Colors.redAccent,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        "Vendas canceladas",
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                      Text(
-                                        _vendasCanceladas.toString(),
-                                        style: const TextStyle(fontSize: 18),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
+                            // Expanded(
+                            //   child: Card(
+                            //     color: Colors.redAccent,
+                            //     child: Padding(
+                            //       padding: const EdgeInsets.all(15.0),
+                            //       child: Column(
+                            //         crossAxisAlignment:
+                            //             CrossAxisAlignment.start,
+                            //         children: [
+                            //           const Text(
+                            //             "Vendas canceladas",
+                            //             style: TextStyle(fontSize: 18),
+                            //           ),
+                            //           Text(
+                            //             _vendasCanceladas.toString(),
+                            //             style: const TextStyle(fontSize: 18),
+                            //           ),
+                            //         ],
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -150,9 +149,9 @@ class HomeWidget extends StatelessWidget {
                       backgroundColor: Colors.deepOrange,
                     ),
                     onPressed: () {
-                      Navigator.of(context).pushNamed(
+                      Navigator.of(context).pushReplacementNamed(
                         Routes.VENDAS_HOJE,
-                        arguments: _listVendas,
+                        arguments: {'listaVendas': _listVendas, 'user': user},
                       );
                     },
                     child: Text("Vizualizar vendas"),

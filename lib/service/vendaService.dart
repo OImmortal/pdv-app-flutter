@@ -24,14 +24,11 @@ class VendaService {
       "valorTotal": venda.getValor,
     });
 
-    print(body);
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
       body: body,
     );
-
-    print(response.statusCode);
   }
 
   Future<List<Venda>?> getVenda() async {
@@ -49,13 +46,15 @@ class VendaService {
             // print(value['listaProdutos']);
             double? valor = double.tryParse(value['valorTotal'].toString());
 
-            Venda vendaAdd = Venda.semVendedor(
+            Venda vendaAdd = Venda.get(
+              id: key,
               nomeVenda: value['nomeVenda'],
               valor: valor,
               listaProdutos: value['listaProdutos'],
               nomeComprador: value['nomeComprador'],
               dataVenda: DateTime.parse(value['dataVenda']),
             );
+
             _listVendas.add(vendaAdd);
           }
         });
@@ -66,5 +65,24 @@ class VendaService {
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+  Future<void> patchVenda(Venda venda) async {
+    Uri url = Uri.parse(
+      "https://pdv-teste-project-default-rtdb.firebaseio.com/vendas/${venda.getIdVenda}.json",
+    );
+
+    final body = jsonEncode({
+      "nomeVenda": venda.getNomeVenda,
+      "nomeComprador": venda.getNomeComprador,
+      "valorTotal": venda.getValor,
+      "dataVenda": venda.getDataVenda.toString(),
+    });
+
+    final response = await http.patch(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: body,
+    );
   }
 }
